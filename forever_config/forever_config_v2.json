@@ -1,0 +1,67 @@
+[
+    {
+        "uid": "node_app1_8080_fork",
+        "append": true,
+        "watch": true,
+        "logFile": "node_app1_8080_fork_forever.log",
+        "outFile": "./logs/v2/node_app1_8080_fork_out.log",
+        "errFile": "./logs/v2/node_app1_8080_fork_error.log",
+        "script": "server.js",
+        "args": [
+            "-p",
+            "8080"
+        ]
+    },
+    {
+        "uid": "node_app2_8082_cluster",
+        "append": true,
+        "watch": true,
+        "script": "server.js",
+        "logFile": "node_app2_8082_cluster_forever.log",
+        "outFile": "./logs/v2/node_app2_8082_cluster_out.log",
+        "errFile": "./logs/v2/node_app2_8082_cluster_error.log",
+        "args": [
+            "-p",
+            "8082"
+        ]
+    },
+    {
+        "uid": "node_app2_8083_cluster",
+        "append": true,
+        "watch": true,
+        "script": "server.js",
+        "logFile": "node_app2_8083_cluster_forever.log",
+        "outFile": "./logs/v2/node_app2_8083_cluster_out.log",
+        "errFile": "./logs/v2/node_app2_8083_cluster_error.log",
+        "args": [
+            "-p",
+            "8083"
+        ]
+    },
+    {
+        "uid": "node_app2_8084_cluster",
+        "append": true,
+        "watch": true,
+        "script": "server.js",
+        "logFile": "node_app2_8084_cluster_forever.log",
+        "outFile": "./logs/v2/node_app2_8084_cluster_out.log",
+        "errFile": "./logs/v2/node_app2_8084_cluster_error.log",
+        "args": [
+            "-p",
+            "8084"
+        ]
+    },
+    {
+        "uid": "node_app2_8085_cluster",
+        "append": true,
+        "watch": true,
+        "script": "server.js",
+        "logFile": "node_app2_8085_cluster_forever.log",
+        "outFile": "./logs/v2/node_app2_8085_cluster_out.log",
+        "errFile": "./logs/v2/node_app2_8085_cluster_error.log",
+        "args": [
+            "-p",
+            "8085"
+        ]
+    }
+]

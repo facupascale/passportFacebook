@@ -1,0 +1,31 @@
+
+[
+    {
+        "uid": "node_app1_8080_fork",
+        "append": true,
+        "watch": true,
+        "logFile": "node_app1_8080_fork_forever.log",
+        "outFile": "./logs/v1/node_app1_8080_fork_out.log",
+        "errFile": "./logs/v1/node_app1_8080_fork_error.log",
+        "script": "server.js",
+        "args": [
+            "-p",
+            "8080"
+        ]
+    },
+    {
+        "uid": "node_app2_8081_cluster",
+        "append": true,
+        "watch": true,
+        "script": "server.js",
+        "logFile": "node_app2_8081_cluster_forever.log",
+        "outFile": "./logs/v1/node_app2_8081_cluster_out.log",
+        "errFile": "./logs/v1/node_app2_8081_cluster_error.log",
+        "args": [
+            "-p",
+            "8081",
+            "-m",
+            "cluster"
+        ]
+    }
+]

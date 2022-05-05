@@ -1,15 +1,24 @@
 let express = require('express')
 let expressSession = require('express-session');
 const app = express()
-const PORT = 3000;
 let passport = require('passport');
+let yargs = require('yargs')
+let { hideBin } = require('yargs/helpers')
 let FacebookStrategy = require('passport-facebook').Strategy
+let {randomsController} = require('./controllers/randomsController');
+let { infoController } = require('./controllers/infoController');
+let cluster = require('cluster');
+let os = require('os');
+let compression = require('compression');
+let logger = require('./utils/winston/winston_config');
 
+app.use(compression())
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 app.set('views', './views')
-app.set('view engine', 'ejs')
+// app.set('view engine', 'ejs') // => para login con facebook
+app.set('view engine', 'hbs') 
 
 passport.use( new FacebookStrategy({
   clientID: 1109957979550535,
@@ -94,9 +103,81 @@ app.get('/logout', (req, res, next) => {
   })
 })
 
+app.get('/api/info', infoController.getInfo)
 
+app.get('/api/randoms', randomsController.getRandoms)
 
-app.listen(PORT, (err) => {
-  if (err) return console.log('error en listen server', err);
-  console.log(`Server running on PORT ${PORT}`)
-})
+const numCPUs = os.cpus().length
+
+const argv = yargs(hideBin(process.argv))
+    .default({
+        modo: 'FORK',
+        puerto: 8080
+    })
+    .alias({
+        m: 'modo',
+        p: 'puerto'
+    })
+    .argv
+
+const PORT = argv.puerto
+
+logger.info(`Valor de entorno NODE_ENV: ${process.env.NODE_ENV}`)
+
+if (argv.modo.toUpperCase() == 'CLUSTER') {
+
+    if (cluster.isPrimary) {
+        console.log(`Master Cluster PID ${process.pid} is running.`)
+
+        // FORK WORKER
+        for (let i = 0; i < numCPUs; i++) {
+            cluster.fork()
+        }
+
+        cluster.on('exit', (worker, code, signal) => {
+            console.log(`worker ${worker.process.pid} died.`)
+            cluster.fork()
+        })
+
+    } else {
+
+        const server = httpsServer.listen(PORT, (err) => {
+            if (err) {
+                console.log("Error while starting server")
+            } else {
+                console.log(
+                    `
+                    ------------------------------------------------------------
+                    WORKER ${server.address().port}  Process Pid: ${process.pid}
+                    Open link to https://localhost:${server.address().port}     
+                    -------------------------------------------------------------
+                    `
+                )
+            }
+        })
+
+        server.on('error', error => console.log(`Error en servidorProcess Pid: ${process.pid}: ${error}`))
+    }
+    
+} else {
+
+    serverSocketsEvents(httpsServer)
+
+    const server = httpsServer.listen(PORT, 'localhost', (err) => {
+        if (err) {
+            console.log("Error while starting server")
+        } else {
+            console.log(
+                `
+                ------------------------------------------------------------
+                Servidor http escuchando en el puerto ${server.address().port}
+                Open link to https://localhost:${server.address().port}      
+                -------------------------------------------------------------
+                `
+            )
+        }
+    })
+
+    server.on('error', error => console.log(`Error en servidor ${error}`))
+
+}

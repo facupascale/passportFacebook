@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Randoms</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <div class="container">
+        <div class="d-flex col-12 mt-5">
+    
+            <table class="table table-light table-striped table-hover">
+                <thead>
+                    <tr class="table-info fs-3">
+                        <th class="col-4" scope="col">Randoms</th>
+                        <th class="col-8" scope="col">#{{cant}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-4">Número</td>
+                        <td class="col-8">Cantidad de ocurrencias</td>
+                    </tr>
+                    {{#each data}}
+                    <tr>
+                        <td class="col-4">{{@key}}</td>
+                        <td class="col-8">{{this}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+    
+        </div>
+    </div>
+</body>
+</html>
