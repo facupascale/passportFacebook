@@ -132,7 +132,7 @@ const argv = yargs(hideBin(process.argv))
     })
 .argv
 
-const PORT = argv.puerto
+const PORT = process.env.PORT || argv.puerto
 
 logger.info(`Valor de entorno NODE_ENV: ${process.env.NODE_ENV}`)
 
