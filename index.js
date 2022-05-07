@@ -14,7 +14,6 @@ let fs = require('fs');
 
 
 const app = express()
-let httpServer = require('http').Server(app);
 
 const credentials = {
   key: fs.readFileSync('key.pem'),
@@ -34,10 +33,10 @@ passport.use( new FacebookStrategy({
   clientSecret: 'fbbba54e037299cf10268200917f1351' ,
   callbackURL: '/auth/facebook/callback',
 }, 
-  function(accesToken, refreshToken, profile, done) {
-    console.log(profile)  
-    done(null, user);
-  }
+function(accesToken, refreshToken, profile, done) {
+  console.log(profile)  
+  done(null, user);
+}
 ));
 
 app.use(expressSession({
@@ -118,12 +117,14 @@ app.get('/api/info', infoController.getInfo)
 
 app.get('/api/randoms', randomsController.getRandoms)
 
+let httpServer = require('http').Server(app);
+
 const numCPUs = os.cpus().length
 
 const argv = yargs(hideBin(process.argv))
 .default({
   modo: 'FORK',
-  puerto: process.env.port || 8080
+  puerto: process.env.PORT || 8080
 })
 .alias({
   m: 'modo',
