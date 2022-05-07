@@ -10,11 +10,11 @@ let cluster = require('cluster');
 let os = require('os');
 let compression = require('compression');
 let {logger} = require('./utils/winston/winston_config');
-let httpServer = require('http').Server(app);
 let fs = require('fs');
 
 
 const app = express()
+let httpServer = require('http').Server(app);
 
 const credentials = {
   key: fs.readFileSync('key.pem'),
@@ -160,7 +160,7 @@ if (argv.modo.toUpperCase() == 'CLUSTER') {
                     `
                     ------------------------------------------------------------
                     WORKER ${server.address().port}  Process Pid: ${process.pid}
-                    Open link to https://localhost:${server.address().port}     
+                    Open link to http://localhost:${server.address().port}     
                     -------------------------------------------------------------
                     `
                 )
@@ -180,7 +180,7 @@ if (argv.modo.toUpperCase() == 'CLUSTER') {
                 `
                 ------------------------------------------------------------
                 Servidor http escuchando en el puerto ${server.address().port}
-                Open link to https://localhost:${server.address().port}      
+                Open link to http://localhost:${server.address().port}      
                 -------------------------------------------------------------
                 `
             )
