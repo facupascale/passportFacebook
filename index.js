@@ -10,7 +10,7 @@ let cluster = require('cluster');
 let os = require('os');
 let compression = require('compression');
 let {logger} = require('./utils/winston/winston_config');
-let https = require('https')
+let httpServer = require('http').Server(app);
 let fs = require('fs');
 
 
@@ -118,20 +118,18 @@ app.get('/api/info', infoController.getInfo)
 
 app.get('/api/randoms', randomsController.getRandoms)
 
-const httpsServer = https.createServer(credentials, app);
-
 const numCPUs = os.cpus().length
 
 const argv = yargs(hideBin(process.argv))
 .default({
   modo: 'FORK',
-  puerto: 8080
+  puerto: process.env.port || 8080
 })
 .alias({
   m: 'modo',
   p: 'puerto'
     })
-    .argv
+.argv
 
 const PORT = argv.puerto
 
@@ -154,7 +152,7 @@ if (argv.modo.toUpperCase() == 'CLUSTER') {
 
     } else {
 
-        const server = httpsServer.listen(PORT, (err) => {
+        const server = httpServer.listen(PORT, (err) => {
             if (err) {
                 console.log("Error while starting server")
             } else {
@@ -174,7 +172,7 @@ if (argv.modo.toUpperCase() == 'CLUSTER') {
     
 } else {
 
-    const server = httpsServer.listen(PORT, 'localhost', (err) => {
+    const server = httpServer.listen(PORT, 'localhost', (err) => {
         if (err) {
             console.log("Error while starting server")
         } else {
