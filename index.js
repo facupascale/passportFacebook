@@ -1,6 +1,5 @@
 let express = require('express')
 let expressSession = require('express-session');
-const app = express()
 let passport = require('passport');
 let yargs = require('yargs')
 let { hideBin } = require('yargs/helpers')
@@ -10,7 +9,17 @@ let { infoController } = require('./controllers/infoController');
 let cluster = require('cluster');
 let os = require('os');
 let compression = require('compression');
-let logger = require('./utils/winston/winston_config');
+let {logger} = require('./utils/winston/winston_config');
+let https = require('https')
+let fs = require('fs');
+
+
+const app = express()
+
+const credentials = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+}
 
 app.use(compression())
 app.use(express.json());
@@ -44,6 +53,8 @@ app.use(expressSession({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 
 app.get('/auth/facebook', passport.authenticate('facebook'));
 
@@ -107,16 +118,18 @@ app.get('/api/info', infoController.getInfo)
 
 app.get('/api/randoms', randomsController.getRandoms)
 
+const httpsServer = https.createServer(credentials, app);
+
 const numCPUs = os.cpus().length
 
 const argv = yargs(hideBin(process.argv))
-    .default({
-        modo: 'FORK',
-        puerto: 8080
-    })
-    .alias({
-        m: 'modo',
-        p: 'puerto'
+.default({
+  modo: 'FORK',
+  puerto: 8080
+})
+.alias({
+  m: 'modo',
+  p: 'puerto'
     })
     .argv
 
@@ -160,8 +173,6 @@ if (argv.modo.toUpperCase() == 'CLUSTER') {
     }
     
 } else {
-
-    serverSocketsEvents(httpsServer)
 
     const server = httpsServer.listen(PORT, 'localhost', (err) => {
         if (err) {

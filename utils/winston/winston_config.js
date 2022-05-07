@@ -1,4 +1,4 @@
-import { createLogger, format, transport } from 'winston';
+let { createLogger, format, transports } = require('winston');
 
 const { combine, timestamp, prettyPrint } = format;
 
@@ -16,7 +16,7 @@ function filterOnly(leve) {
 const loggerDevelopment = {
     level: 'development',
     transports: [
-        new transport.Console({
+        new transports.Console({
             format: combine(
                 prettyPrint()
             ),
@@ -51,4 +51,4 @@ const loggerProduction = {
 
 const logger = process.env.NODE_ENV == 'PROD' ? createLogger(loggerProduction) : createLogger(loggerDevelopment)
 
-export default logger;
+module.exports = {logger};
