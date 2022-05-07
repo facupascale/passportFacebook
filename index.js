@@ -133,7 +133,7 @@ const argv = yargs(hideBin(process.argv))
 .argv
 
 const PORT = argv.puerto
-
+console.log(PORT, 'soy puerto')
 logger.info(`Valor de entorno NODE_ENV: ${process.env.NODE_ENV}`)
 
 if (argv.modo.toUpperCase() == 'CLUSTER') {
