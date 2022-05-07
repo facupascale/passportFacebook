@@ -1,6 +1,6 @@
-import autocannon from 'autocannon';
-import { PassTrough } from 'stream'
-import logger from './utils/winston/winston_config';
+let autocannon = require('autocannon')
+let { PassTrough } = require('stream')
+let logger = require('./utils/winston/winston_config')
 
 function run(url) {
     const buf = [];

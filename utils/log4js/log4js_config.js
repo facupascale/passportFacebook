@@ -1,4 +1,4 @@
-import log4js from 'log4js'
+let log4js = require('log4js')
 
 log4js.configure({
     appenders: {
@@ -12,12 +12,12 @@ log4js.configure({
         loggerErrorFile: { type: 'logLevelFilter', appender: 'errorFile', level: 'error' },
     },
     categories: {
-        default: { appenders: ['loggerConsole'], level: 'all'},
-        development: { appenders: ['loggerConsole'], level: 'all'},
-        production: { appenders: ['loggerConsole', 'loggerErrorFile'], level: 'all'}
+        default: { appenders: ['loggerConsole'], level: 'all' },
+        development: { appenders: ['loggerConsole'], level: 'all' },
+        production: { appenders: ['loggerConsole', 'loggerErrorFile'], level: 'all' }
     }
 })
 
 const logger = log4js.getLogger(process.env.NODE_ENV == 'PROD' ? 'production' : 'development')
 
-export default logger
+module.exports = {logger}
