@@ -173,7 +173,7 @@ if (argv.modo.toUpperCase() == 'CLUSTER') {
     
 } else {
 
-    const server = httpServer.listen(PORT, 'localhost', (err) => {
+    const server = httpServer.listen(PORT, (err) => {
         if (err) {
             console.log("Error while starting server")
         } else {
